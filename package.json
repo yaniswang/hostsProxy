@@ -1,0 +1,29 @@
+{
+  "name": "hostsproxy",
+  "version": "0.9.1",
+  "description": "Hosts proxy for auto test.",
+  "main": "lib/hostsproxy",
+  "dependencies": {
+    "commander": "2.2.0"
+  },
+  "devDependencies": {},
+  "bin": {
+    "hostsproxy": "./bin/hostsproxy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/yaniswang/hostsProxy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yaniswang/hostsProxy/issues"
+  },
+  "keywords": [
+    "hosts",
+    "proxy",
+    "autotest",
+    "nodejs",
+    "javascript"
+  ],
+  "author": "Yanis Wang",
+  "license": "MIT"
+}

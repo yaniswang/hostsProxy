@@ -1,0 +1,70 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+var cp = require('child_process');
+var pkg = require('../package.json');
+var fs = require('fs');
+var path = require('path');
+
+program.on('--help', function(){
+    console.log('  Examples:');
+    console.log('');
+    console.log('    hostsproxy start');
+    console.log('    hostsproxy start 1234');
+    console.log('    hostsproxy stop');
+    console.log('');
+});
+
+program
+    .version(pkg.version)
+    .usage('[command] [option]');
+
+program
+    .command('start [port]')
+    .description('Start hosts proxy.')
+    .action(function (port) {
+        startProxy(port || 0);
+    });
+
+program
+    .command('stop')
+    .description('Stop hosts proxy.')
+    .action(stopProxy);
+
+program.parse(process.argv);
+
+function startProxy(port){
+    var pid = getPid();
+    if(pid === undefined){
+        var child = cp.spawn('node', [ path.join(__dirname, 'startproxy.js'), port ], {
+            detached: true,
+            stdio: [ 'ignore', 'ignore', 'ignore' ]
+        });
+        child.unref();
+        console.log('Proxy started.');
+    }
+    else{
+        console.log('Proxy is running, please stop it first.');
+        process.exit(1);
+    }
+}
+
+function stopProxy(){
+    var pid = getPid();
+    if(pid !== undefined){
+        try{
+            process.kill(pid);
+            console.log('Proxy killed.');
+        }
+        catch(e){}
+        fs.unlinkSync('./.hostsproxy');
+    }
+}
+
+function getPid(){
+    try{
+        var obj = JSON.parse(fs.readFileSync('./.hostsproxy'));
+        return obj.pid;
+    }
+    catch(e){}
+}
