@@ -25,7 +25,7 @@ Install
 
 2. Install hostsproxy from npm
 
-        npm install hostsproxy
+        npm install hostsproxy -g
 
 Usage
 =======================
